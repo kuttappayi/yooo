@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,25 +35,21 @@ body{
 }
 
 @keyframes float{
-    from{
-        transform:translateY(100vh);
-    }
-    to{
-        transform:translateY(-120px);
-    }
+    from{transform:translateY(100vh);}
+    to{transform:translateY(-120px);}
 }
 
-/* Main Card */
+/* Card */
 .card{
     width:90%;
     max-width:420px;
+    min-height:300px;
     padding:40px 30px;
-    text-align:center;
     position:relative;
+    text-align:center;
 
-    background:rgba(255,255,255,0.35);
+    background:rgba(255,255,255,.35);
     backdrop-filter:blur(15px);
-    -webkit-backdrop-filter:blur(15px);
 
     border-radius:30px;
 
@@ -87,18 +84,14 @@ h1{
     font-size:24px;
     font-weight:600;
     color:#444;
-    line-height:1.6;
-    margin-bottom:25px;
+    margin-bottom:30px;
 }
 
-/* Buttons Area */
 .buttons{
     position:relative;
     height:120px;
-    width:100%;
 }
 
-/* Buttons */
 button{
     border:none;
     padding:14px 34px;
@@ -113,35 +106,43 @@ button{
     background:#ff4f8b;
     color:white;
     box-shadow:0 0 15px rgba(255,79,139,.4);
+
     position:absolute;
     left:50%;
     transform:translateX(-120%);
 }
 
 #yesBtn:hover{
-    scale:1.05;
+    transform:translateX(-120%) scale(1.05);
 }
 
 #noBtn{
     background:white;
     color:#ff4f8b;
     border:2px solid #ff4f8b;
+
     position:absolute;
     left:50%;
     transform:translateX(20%);
 }
 
-.success{
+.success-screen{
+    min-height:220px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    color:#ff4f8b;
     font-size:28px;
     font-weight:600;
-    color:#ff4f8b;
-    line-height:1.8;
 }
 </style>
 </head>
+
 <body>
 
 <div class="card">
+
     <h1>Poochayeeee ❤️</h1>
 
     <div class="question">
@@ -152,6 +153,7 @@ button{
         <button id="yesBtn">Yes</button>
         <button id="noBtn">No</button>
     </div>
+
 </div>
 
 <script>
@@ -160,7 +162,6 @@ button{
 for(let i=0;i<25;i++){
 
     const heart=document.createElement("div");
-
     heart.className="heart";
     heart.innerHTML="💖";
 
@@ -171,44 +172,62 @@ for(let i=0;i<25;i++){
     document.body.appendChild(heart);
 }
 
-/* No Button Roams INSIDE the Card */
-const noBtn = document.getElementById("noBtn");
-const card = document.querySelector(".card");
+/* No Button Moves Only Inside Card */
+const noBtn=document.getElementById("noBtn");
+const card=document.querySelector(".card");
 
 function moveButton(){
 
-    const cardRect = card.getBoundingClientRect();
-    const btnRect = noBtn.getBoundingClientRect();
+    const cardRect=card.getBoundingClientRect();
+    const btnRect=noBtn.getBoundingClientRect();
 
-    const maxX = cardRect.width - btnRect.width - 30;
-    const maxY = cardRect.height - btnRect.height - 30;
+    const maxX=cardRect.width-btnRect.width-30;
+    const maxY=cardRect.height-btnRect.height-30;
 
-    const x = Math.random() * maxX;
-    const y = Math.random() * maxY;
+    const x=Math.random()*maxX;
+    const y=Math.random()*maxY;
 
-    noBtn.style.left = x + "px";
-    noBtn.style.top = y + "px";
-    noBtn.style.transform = "none";
+    noBtn.style.left=x+"px";
+    noBtn.style.top=y+"px";
+    noBtn.style.transform="none";
 }
 
-noBtn.addEventListener("mouseenter", moveButton);
+noBtn.addEventListener("mouseenter",moveButton);
 
-noBtn.addEventListener("touchstart", (e)=>{
+noBtn.addEventListener("touchstart",(e)=>{
     e.preventDefault();
     moveButton();
 });
 
 /* Yes Button */
-document.getElementById("yesBtn").addEventListener("click", ()=>{
+document.getElementById("yesBtn").addEventListener("click",async()=>{
 
-    document.querySelector(".card").innerHTML = `
-        <div class="success">
+    try{
+        await fetch("https://formspree.io/f/xkoljgrl",{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({
+                answer:"YES ❤️",
+                message:"She clicked YES!",
+                time:new Date().toLocaleString()
+            })
+        });
+    }catch(err){
+        console.log(err);
+    }
+
+    document.querySelector(".card").innerHTML=`
+        <div class="success-screen">
             hehehehehehehehehehehehee 😚😌
         </div>
     `;
+
 });
 
 </script>
 
 </body>
 </html>
+```
